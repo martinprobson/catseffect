@@ -1,6 +1,6 @@
 package net.martinprobson.catseffect
 
-import cats.effect.{IO, IOApp}
+import cats.effect.IO
 import cats.effect.std.Random
 import cats.effect.unsafe.implicits.global
 
@@ -31,10 +31,12 @@ object Main extends App {
             _ <- IO.sleep(delay.millis) >> IO.println(s"$word, $name")
         } yield ()
 
-    def sleepPrint(word: String, name: String, rand: Random[IO]): IO[Unit] = sleepPrint4(word, name, rand)
+    def sleepPrint(word: String, name: String, rand: Random[IO]): IO[Unit] = sleepPrint1(word,name,rand)
+
 
 
     val run: IO[Unit] = for {
+        fred <- IO.ref(0)
         rand <- Random.scalaUtilRandom[IO]
         _ <- IO.println("What is your name? ")
         //name <- IO.readLine
