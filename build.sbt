@@ -6,8 +6,14 @@ scalaVersion := "2.13.6"
 
 val catsEffectVersion = "3.2.2"
 
-//idePackagePrefix := Some("net.martinprobson.catseffect")
-
 libraryDependencies ++= Seq(
-    "org.typelevel" %% "cats-effect" % catsEffectVersion
+    "org.typelevel" %% "cats-effect" % catsEffectVersion withSources() withJavadoc(),
+    "org.typelevel" %% "cats-mtl" % "1.2.1" withSources() withJavadoc()
+)
+
+scalacOptions ++= Seq(
+    "-feature",
+    "-deprecation",
+    "-unchecked",
+    "-language:postfixOps"
 )

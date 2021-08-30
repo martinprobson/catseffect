@@ -7,7 +7,7 @@ import cats.effect.unsafe.implicits.global
 
 import scala.concurrent.duration.DurationInt
 
-object Main2 extends App {
+object Example2 extends App {
     val prog1: IO[Unit] = for {
         ctr <- IO.ref(0)
 

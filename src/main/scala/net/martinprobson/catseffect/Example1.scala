@@ -7,7 +7,7 @@ import cats.effect.unsafe.implicits.global
 import scala.concurrent.duration.DurationInt
 
 //object Main extends IOApp.Simple {
-object Main extends App {
+object Example1 extends App {
     //val run = IO.println("Hello world!")
 
     def sleepPrint1(word: String, name: String, rand: Random[IO]): IO[Unit] =
@@ -41,6 +41,7 @@ object Main extends App {
         _ <- IO.println("What is your name? ")
         //name <- IO.readLine
         name <- IO.pure("Martin")
+        name2 <- IO.pure(1).memoize
 
         english <- sleepPrint("Hello", name, rand).foreverM.start
         french <- sleepPrint("Bonjour", name, rand).foreverM.start

@@ -12,4 +12,5 @@
 /project/project/metals.sbt
 /project/target/
 /project/metals.sbt
-/project/plugins.sbt
+/build.tmp
+/testFile.txt
