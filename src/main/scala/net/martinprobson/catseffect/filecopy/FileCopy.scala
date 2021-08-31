@@ -2,22 +2,27 @@ package net.martinprobson.catseffect.filecopy
 
 import cats.data.EitherT
 import cats.effect.{ExitCode, IO, IOApp, Resource}
+import cats.effect.std.Console
 import net.martinprobson.catseffect.filecopy.DomainError.{SourceAndDestinationTheSame, SourceFileDoesNotExist, WrongArgumentCount}
 
 import java.io._
 
 object FileCopy extends IOApp {
 
-    def run(args: List[String]): IO[ExitCode] =
+    def run(args: List[String]): IO[ExitCode] = {
+        runCopy(args).flatMap({
+            case Left(err) => Console[IO].errorln(err) >> IO(ExitCode.Error)
+            case Right((orig, dest, count)) => IO(println(s"$count bytes copied from ${orig.getPath} to ${dest.getPath}")) >> IO(ExitCode.Success)
+        })
+    }
+
+    def runCopy(args: List[String]): IO[Either[DomainError, (File, File, Long)]] =
         (for {
             _ <- EitherT(validate(args))
             orig = new File(args.head)
             dest = new File(args.tail.head)
             count <- EitherT(copy(orig, dest))
-        } yield (orig, dest, count)).value.flatMap({
-            case Left(err) => IO(println(err)) >> IO(ExitCode.Error)
-            case Right((orig, dest, count)) => IO(println(s"$count bytes copied from ${orig.getPath} to ${dest.getPath}")) >> IO(ExitCode.Success)
-        })
+        } yield (orig, dest, count)).value
 
     def validate(args: List[String]): IO[Either[DomainError, Unit]] = {
         if (args.length != 2)
@@ -32,10 +37,29 @@ object FileCopy extends IOApp {
         }
     }
 
-    def copy(origin: File, destination: File): IO[Either[DomainError, Long]] =
-        inputOutputStreams(origin, destination).use { case (in, out) =>
-            transfer(in, out)
+    def copy(origin: List[File], dest: File): IO[Either[DomainError, Long]] = origin match {
+        case h :: tl => copy(h, new File(dest.getAbsolutePath + File.separator + h.getName)) >> copy(tl, dest)
+        case Nil => IO(Right(0L))
+    }
+
+    def mkdir(dir: File): IO[Either[DomainError, Unit]] = {
+        IO.pure(dir.mkdir()).flatMap(r =>
+            if (r)
+                IO(Right(()))
+            else {
+                IO.raiseError(new Exception(s"Cannot make directory ${dir.getPath}"))
+            })
+    }
+
+    def copy(origin: File, destination: File): IO[Either[DomainError, Long]] = {
+        if (origin.isDirectory)
+                mkdir(destination) >> copy(origin.listFiles().toList, destination)
+        else {
+            inputOutputStreams(origin, destination).use { case (in, out) =>
+                transfer(in, out)
+            }
         }
+    }
 
     def transfer(origin: InputStream, destination: OutputStream): IO[Either[DomainError, Long]] =
         transmit(origin, destination, new Array[Byte](1024 * 10), 0)

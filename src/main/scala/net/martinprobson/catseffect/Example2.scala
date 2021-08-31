@@ -23,9 +23,9 @@ object Example2 extends App {
             val wait = IO.sleep(1.second)
             val poll = wait >> ctr.get
 
-            poll.flatMap(IO.println(_)).foreverM.start >>
+            poll.flatMap(i => IO.println(i)).foreverM.start >>
                     (wait >> ctr.update(_ + 10)).foreverM.void
         })
     }
-    prog2.unsafeRunSync()
+    prog1.unsafeRunSync()
 }
