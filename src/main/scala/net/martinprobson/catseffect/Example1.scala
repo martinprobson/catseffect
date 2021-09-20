@@ -54,4 +54,8 @@ object Example1 extends App {
     } yield ()
 
     run.unsafeRunSync()
+    run.unsafeRunAsync(e => e match {
+        case Left(err) => println(s"error $err")
+        case Right(r) => println(s"Done $r")
+    })
 }
