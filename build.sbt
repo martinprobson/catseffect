@@ -4,7 +4,7 @@ version := "0.1"
 
 scalaVersion := "2.13.6"
 
-val catsEffectVersion = "3.2.2"
+val catsEffectVersion = "3.2.9"
 
 libraryDependencies ++= Seq(
     "org.typelevel" %% "cats-effect" % catsEffectVersion withSources() withJavadoc(),
