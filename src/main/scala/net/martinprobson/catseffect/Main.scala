@@ -15,16 +15,17 @@ object Main extends IOApp.Simple {
   val goShoppingLater: IO[Unit] = goShopping("Martin").delayBy(10.seconds)
 
   val goShoppingInfinite: IO[Unit] = for {
-    fred <- goShopping("Fred").start
+    fred <- goShopping("Fred").timeout(2.seconds).start
     joe <- goShopping("Joe").start
     bob <- goShopping("Bob").start
     bill <- goShopping("Bill").start
     jane <- goShoppingError.start
-    _ <- IO.sleep(10.seconds) >>
-      fred.cancel >>
-      bob.cancel >>
-      joe.cancel >>
-      bill.cancel
+    _ <- IO.sleep(20.seconds)
+//    _ <- IO.sleep(10.seconds) >>
+//      fred.cancel >>
+//      bob.cancel >>
+//      joe.cancel >>
+//      bill.cancel
   } yield ()
 
   override def run: IO[Unit] = goShoppingInfinite

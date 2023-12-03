@@ -1,4 +1,4 @@
-val catsEffectVersion = "3.2.9"
+val catsEffectVersion = "3.5.2"
 
 val catseffect = Seq(
   "org.typelevel" %% "cats-effect" % catsEffectVersion withSources () withJavadoc ()
@@ -11,7 +11,7 @@ val logging = Seq(
   "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4"
 )
 
-val config = Seq("com.typesafe" % "config" % "1.4.1", "com.github.andr83" %% "scalaconfig" % "0.7")
+val config = Seq("com.typesafe" % "config" % "1.4.1")
 
 val test = Seq(
   "org.scalactic" %% "scalactic" % "3.2.10" % Test,
@@ -28,18 +28,16 @@ lazy val cats_effect = (project in file("."))
     libraryDependencies ++= catseffect,
     libraryDependencies ++= config,
     libraryDependencies ++= test,
-    scalaVersion := "2.13.6"
+    scalaVersion := "3.3.1"
   )
+
+Compile / run / fork := true
 
 scalacOptions ++= Seq(
   "-deprecation", // Emit warning and location for usages of deprecated APIs.
   "-explaintypes", // Explain type errors in more detail.
-  "-Xfatal-warnings", // Fail the compilation if there are any warnings.
-  "-Xsource:3", // Warn for Scala 3 features
-  "-Ywarn-dead-code" // Warn when dead code is identified.
+  "-Xfatal-warnings" // Fail the compilation if there are any warnings.
 )
-
-javacOptions ++= Seq("-source", "17", "-target", "17", "-Xlint")
 
 assembly / assemblyMergeStrategy := {
   case PathList("META-INF", xs @ _*)       => MergeStrategy.discard
