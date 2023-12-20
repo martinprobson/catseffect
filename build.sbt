@@ -5,19 +5,19 @@ val catseffect = Seq(
 )
 
 val logging = Seq(
-  "org.slf4j" % "slf4j-api" % "2.0.0-alpha4",
-  "ch.qos.logback" % "logback-classic" % "1.3.0-alpha10",
-  "ch.qos.logback" % "logback-core" % "1.3.0-alpha10",
-  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4"
+  "org.slf4j" % "slf4j-api" % "2.0.5",
+  "ch.qos.logback" % "logback-classic" % "1.4.7",
+  "ch.qos.logback" % "logback-core" % "1.4.7",
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 )
 
-val config = Seq("com.typesafe" % "config" % "1.4.1")
+val config = Seq("com.typesafe" % "config" % "1.4.2")
 
 val test = Seq(
-  "org.scalactic" %% "scalactic" % "3.2.10" % Test,
-  "org.scalatest" %% "scalatest" % "3.2.10" % Test,
-  "commons-io" % "commons-io" % "2.8.0" % Test,
-  "org.typelevel" %% "cats-effect-testing-scalatest" % "1.2.0" % Test withSources () withJavadoc ()
+  "org.scalactic" %% "scalactic" % "3.2.16" % Test,
+  "org.scalatest" %% "scalatest" % "3.2.15" % Test,
+  "commons-io" % "commons-io" % "2.11.0" % Test,
+  "org.typelevel" %% "cats-effect-testing-scalatest" % "1.4.0" % Test withSources () withJavadoc ()
 )
 
 lazy val cats_effect = (project in file("."))
