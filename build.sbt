@@ -8,7 +8,8 @@ val logging = Seq(
   "org.slf4j" % "slf4j-api" % "2.0.5",
   "ch.qos.logback" % "logback-classic" % "1.4.7",
   "ch.qos.logback" % "logback-core" % "1.4.7",
-  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5",
+  "org.typelevel" %% "log4cats-slf4j" % "2.6.0"
 )
 
 val config = Seq("com.typesafe" % "config" % "1.4.2")
